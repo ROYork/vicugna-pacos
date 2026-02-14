@@ -1,0 +1,49 @@
+# vp_api unit tests
+add_executable(ut_vp_api
+    main.cpp
+    ut_alpaca_enums.cpp
+    ut_alpaca_bars.cpp
+    ut_AssetClass.cpp
+    ut_AssetExchange.cpp
+    ut_AssetStatus.cpp
+    ut_AccountStatus.cpp
+    ut_Account.cpp
+    ut_ContractType.cpp
+    ut_CorporateActionType.cpp
+    ut_CorporateActionSubType.cpp
+    ut_CorporateActionDateType.cpp
+    ut_DTBPCheck.cpp
+    ut_ExerciseStyle.cpp
+    ut_NonTradeActivityStatus.cpp
+    ut_OrderClass.cpp
+    ut_OrderType.cpp
+    ut_OrderStatus.cpp
+    ut_OrderSide.cpp
+    ut_PDTCheck.cpp
+    ut_PositionIntent.cpp
+    ut_PositionSide.cpp
+    ut_QueryOrderStatus.cpp
+    ut_TimeInForce.cpp
+    ut_TradeConfirmationEmail.cpp
+    ut_TradeEvent.cpp
+    ut_Exchange.cpp
+    ut_DataFeed.cpp
+    ut_Adjustment.cpp
+    ut_CryptoFeed.cpp
+    ut_OptionsFeed.cpp
+    ut_MostActivesBy.cpp
+    ut_MarketType.cpp
+    ut_NewsImageSize.cpp
+    ut_CorporateActionsType.cpp
+    ut_TimeFrameUnit.cpp
+    ut_TimeFrame.cpp
+    ut_ActivityCategory.cpp
+    ut_ParseTime.cpp
+    ut_Clock.cpp
+)
+
+target_link_libraries(ut_vp_api
+    GTest::gtest_main
+    GTest::gtest
+    vp_api
+)
