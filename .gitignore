@@ -32,6 +32,22 @@
 *.a
 *.lib
 
+# Clang cache
+.cache/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS File Stores
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
 # Executables
 *.exe
 *.out
@@ -39,3 +55,11 @@
 
 # debug information files
 *.dwo
+
+# CMake build files
+build/
+build_*/
+
+# Qt Creator
+*.user
+*.user.*
