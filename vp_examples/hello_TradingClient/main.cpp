@@ -1,29 +1,22 @@
+#include <cstdlib>
 #include <iostream>
-
-//UUID Defs
-#include <array>
-#include <cstdint>
 #include <string>
-#include <stdexcept>
-#include <charconv>
-#include <cctype>
-#include <cstring>
-
-#include "vp/alpaca_common_enums.h"
 
 #include "vp/TradingClient.h"
-#include "vp/TradeActivityType.h"
-#include "vp/Exchange.h"
-
-const std::string DEFAULT_APCA_API_KEY  = "PK4ZXSGC70J64TFUCMD0";
-const std::string DEFAULT_APCA_API_SECRET_KEY = "WeYDs37M8gTt9rsIcdfzh3g7peQGCK925iDgekpt";
 
 
 int main()
 {
+  const char* api_key = std::getenv("APCA_API_KEY_ID");
+  const char* api_secret = std::getenv("APCA_API_SECRET_KEY");
 
-  vp::TradingClient client(DEFAULT_APCA_API_KEY,
-                               DEFAULT_APCA_API_SECRET_KEY);
+  if (!api_key || !api_secret) {
+    std::cerr << "Error: APCA_API_KEY_ID and APCA_API_SECRET_KEY "
+                 "environment variables must be set." << std::endl;
+    return 1;
+  }
+
+  vp::TradingClient client(api_key, api_secret);
 
 
   auto clk = client.get_clock();
