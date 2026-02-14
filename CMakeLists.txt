@@ -45,10 +45,12 @@ FetchContent_Declare(
   ixwebsocket
   GIT_REPOSITORY https://github.com/machinezone/IXWebSocket.git
   GIT_TAG        v11.4.5
+  SYSTEM
 )
 set(USE_TLS ON CACHE BOOL "Enable TLS support" FORCE)
 set(USE_OPEN_SSL ON CACHE BOOL "Use OpenSSL for TLS" FORCE)
 FetchContent_MakeAvailable(ixwebsocket)
+target_compile_options(ixwebsocket PRIVATE -w)
 
 # Reference Python API (not built — downloaded for developer reference only)
 FetchContent_Declare(
@@ -58,6 +60,8 @@ FetchContent_Declare(
   SOURCE_SUBDIR  _does_not_exist_
 )
 FetchContent_MakeAvailable(alpaca_py)
+
+enable_testing()
 
 add_subdirectory(vp_api)
 add_subdirectory(vp_trading)

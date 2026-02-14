@@ -47,3 +47,6 @@ target_link_libraries(ut_vp_api
     GTest::gtest
     vp_api
 )
+
+include(GoogleTest)
+gtest_discover_tests(ut_vp_api)
