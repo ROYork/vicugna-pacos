@@ -1,0 +1,12 @@
+---
+Checks: >
+  -*,
+  readability-braces-around-statements
+
+WarningsAsErrors: ''
+
+HeaderFilterRegex: 'fb_math|fb_core|fb_strings|fb_signal|fb_constants|fb_xutils|fb_mlab|fb_trackers|fb_dcm'
+
+CheckOptions:
+  - key: readability-braces-around-statements.ShortStatementLines
+    value: '0'

@@ -2,6 +2,7 @@
 #include <glaze/glaze.hpp>
 #include <string>
 #include <optional>
+#include <vector>
 #include <compare>
 #include "vp/OrderType.h"
 #include "vp/OrderSide.h"
@@ -9,6 +10,7 @@
 #include "vp/OrderStatus.h"
 #include "vp/OrderClass.h"
 #include "vp/AssetClass.h"
+#include "vp/PositionIntent.h"
 
 namespace vp {
 
@@ -31,26 +33,46 @@ struct Order
   std::optional<std::string> replaced_at;           ///< Timestamp when order was replaced
   std::optional<std::string> replaced_by;           ///< Order ID that replaced this order
   std::optional<std::string> replaces;              ///< Order ID that this order replaces
+  std::optional<std::string> expires_at;            ///< When the order expires
   AssetClass asset_class = AssetClass::us_equity;   ///< Asset class
   std::string asset_id = "";                        ///< Asset ID
   std::string symbol = "";                          ///< Symbol
-  std::string qty = "0";                            ///< Quantity (as string to handle fractional shares)
-  std::optional<std::string> notional;              ///< Dollar amount (for fractional/notional orders)
+  std::string qty = "0";                            ///< Quantity (string for fractional)
+  std::optional<std::string> notional;              ///< Dollar amount (fractional/notional)
   std::string filled_qty = "0";                     ///< Filled quantity
   std::optional<double> filled_avg_price;           ///< Average fill price
-  OrderClass order_class = OrderClass::simple;      ///< Order class (simple, bracket, oco, oto)
-  OrderType order_type = OrderType::market;         ///< Order type (market, limit, stop, etc.)
+  OrderClass order_class = OrderClass::simple;      ///< Order class
+  OrderType order_type = OrderType::market;         ///< Order type
   OrderSide side = OrderSide::buy;                  ///< Buy or sell
   TimeInForce time_in_force = TimeInForce::day;     ///< Time in force
-  std::optional<double> limit_price;                ///< Limit price (for limit orders)
-  std::optional<double> stop_price;                 ///< Stop price (for stop orders)
+  std::optional<double> limit_price;                ///< Limit price
+  std::optional<double> stop_price;                 ///< Stop price
+  std::optional<double> trail_percent;              ///< Trailing stop percent
+  std::optional<double> trail_price;                ///< Trailing stop price
+  std::optional<double> hwm;                        ///< High water mark
   OrderStatus status = OrderStatus::new_;           ///< Order status
-  bool extended_hours = false;                      ///< If true, eligible for execution outside regular trading hours
-  // Legs for multi-leg orders (bracket, oco, oto)
-  // std::optional<std::vector<Order>> legs;        // Could add this for complex orders
+  bool extended_hours = false;                      ///< Eligible outside regular hours
+  std::optional<PositionIntent> position_intent;    ///< Position intent for options
+  std::optional<std::string> ratio_qty;             ///< Ratio quantity for mleg
+  std::optional<std::vector<Order>> legs;           ///< Legs for multi-leg orders
 
-  // Three-way comparison operator for consistency
-  std::strong_ordering operator<=>(const Order& other) const = default;
+  // Custom comparison (recursive type prevents defaulted <=>)
+  bool operator==(const Order& other) const
+  {
+    return id == other.id
+        && client_order_id == other.client_order_id
+        && symbol == other.symbol
+        && status == other.status;
+  }
+
+  std::strong_ordering operator<=>(const Order& other) const
+  {
+    if (auto cmp = id <=> other.id; cmp != 0)
+    {
+      return cmp;
+    }
+    return client_order_id <=> other.client_order_id;
+  }
 };
 
 } // namespace vp
@@ -72,6 +94,7 @@ struct glz::meta<vp::Order>
     "replaced_at", &T::replaced_at,
     "replaced_by", &T::replaced_by,
     "replaces", &T::replaces,
+    "expires_at", &T::expires_at,
     "asset_class", &T::asset_class,
     "asset_id", &T::asset_id,
     "symbol", &T::symbol,
@@ -80,12 +103,18 @@ struct glz::meta<vp::Order>
     "filled_qty", &T::filled_qty,
     "filled_avg_price", &T::filled_avg_price,
     "order_class", &T::order_class,
-    "order_type", &T::order_type,
+    "type", &T::order_type,
     "side", &T::side,
     "time_in_force", &T::time_in_force,
     "limit_price", &T::limit_price,
     "stop_price", &T::stop_price,
+    "trail_percent", &T::trail_percent,
+    "trail_price", &T::trail_price,
+    "hwm", &T::hwm,
     "status", &T::status,
-    "extended_hours", &T::extended_hours
+    "extended_hours", &T::extended_hours,
+    "position_intent", &T::position_intent,
+    "ratio_qty", &T::ratio_qty,
+    "legs", &T::legs
   );
 };

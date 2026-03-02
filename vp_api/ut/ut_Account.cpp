@@ -217,6 +217,56 @@ TEST(AccountTest, FromJsonMethod)
     ASSERT_EQ("2024-06-15T12:30:45Z", account.created_at);
 }
 
+TEST(AccountTest, FromJsonMethodWithQuotedNumericFields)
+{
+    std::string json_response = R"({
+        "id": "from-json-test",
+        "account_number": "111222333",
+        "status": "ACTIVE",
+        "currency": "USD",
+        "buying_power": "75000.50",
+        "regt_buying_power": "75000.50",
+        "daytrading_buying_power": "150001.00",
+        "non_marginable_buying_power": "75000.50",
+        "cash": "40000.25",
+        "accrued_fees": "15.99",
+        "portfolio_value": "115000.75",
+        "pattern_day_trader": true,
+        "trading_blocked": false,
+        "transfers_blocked": false,
+        "account_blocked": false,
+        "trade_suspended_by_user": false,
+        "multiplier": "3",
+        "shorting_enabled": true,
+        "equity": "115000.75",
+        "last_equity": "114000.00",
+        "long_market_value": "75000.50",
+        "short_market_value": "0.00",
+        "initial_margin": "37500.25",
+        "maintenance_margin": "22500.15",
+        "last_maintenance_margin": "22000.0",
+        "sma": "45000.00",
+        "daytrade_count": "3",
+        "created_at": "2024-06-15T12:30:45Z"
+    })";
+
+    vp::Account account = vp::Account::from_json(json_response);
+
+    ASSERT_EQ("from-json-test", account.id);
+    ASSERT_EQ("111222333", account.account_number);
+    ASSERT_EQ(vp::AccountStatus::ACTIVE, account.status);
+    ASSERT_EQ("USD", account.currency);
+    ASSERT_DOUBLE_EQ(75000.50, account.buying_power);
+    ASSERT_DOUBLE_EQ(40000.25, account.cash);
+    ASSERT_DOUBLE_EQ(115000.75, account.portfolio_value);
+    ASSERT_TRUE(account.pattern_day_trader);
+    ASSERT_FALSE(account.trading_blocked);
+    ASSERT_EQ(3, account.multiplier);
+    ASSERT_TRUE(account.shorting_enabled);
+    ASSERT_EQ(3, account.daytrade_count);
+    ASSERT_EQ("2024-06-15T12:30:45Z", account.created_at);
+}
+
 TEST(AccountTest, RoundTripSerialization)
 {
     // Create original account

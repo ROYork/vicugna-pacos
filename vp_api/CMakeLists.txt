@@ -52,6 +52,26 @@ target_sources(vp_api INTERFACE
     include/vp/alpaca_bars.h
     include/vp/alpaca_common_enums.h
     include/vp/alpaca_constants.h
+    include/vp/QueryBuilder.h
+    include/vp/Asset.h
+    include/vp/AccountConfiguration.h
+    include/vp/Watchlist.h
+    include/vp/PortfolioHistory.h
+    include/vp/OptionContract.h
+    include/vp/CancelOrderResponse.h
+    include/vp/ClosePositionResponse.h
+    include/vp/TradeUpdate.h
+    include/vp/GetOrdersRequest.h
+    include/vp/GetOrderByIdRequest.h
+    include/vp/ReplaceOrderRequest.h
+    include/vp/OrderRequest.h
+    include/vp/ClosePositionRequest.h
+    include/vp/GetCalendarRequest.h
+    include/vp/GetAssetsRequest.h
+    include/vp/GetPortfolioHistoryRequest.h
+    include/vp/CreateWatchlistRequest.h
+    include/vp/UpdateWatchlistRequest.h
+    include/vp/GetOptionContractsRequest.h
 )
 
 target_link_libraries(vp_api INTERFACE

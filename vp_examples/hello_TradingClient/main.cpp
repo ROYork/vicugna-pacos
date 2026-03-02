@@ -23,6 +23,8 @@ int main()
   std::cout << clk.to_json() << std::endl;
 
   auto account = client.get_account();
+  std::cout << account.to_json() << std::endl;
+
   //std::cout <<
   // vp::TradeActivityType tradeAct = vp::TradeActivityType::partial_fill;
   // std::string jsonTradeType  = to_json(tradeAct);

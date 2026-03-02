@@ -40,6 +40,14 @@ add_executable(ut_vp_api
     ut_ActivityCategory.cpp
     ut_ParseTime.cpp
     ut_Clock.cpp
+    ut_Asset.cpp
+    ut_AccountConfiguration.cpp
+    ut_Watchlist.cpp
+    ut_PortfolioHistory.cpp
+    ut_OptionContract.cpp
+    ut_CancelOrderResponse.cpp
+    ut_ClosePositionResponse.cpp
+    ut_TradeUpdate.cpp
 )
 
 target_link_libraries(ut_vp_api
